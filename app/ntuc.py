@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from urllib.request import Request, urlopen
 from pandas.core.tools.numeric import to_numeric
+import ssl
 
 """
 	CONFIGURATION 
@@ -26,6 +27,7 @@ headers = {'User-Agent': 'Mozilla/5.0'}
 		#	}
 		#}
 def search(keywords):
+	context = ssl._create_unverified_context()
 	# a function to generate the search-query URL
 	def generateURL(url, keywords):
 		queryURL = url
@@ -35,7 +37,7 @@ def search(keywords):
 		return queryURL
 	
 	req = Request(generateURL(url, keywords), headers=headers)
-	page = urlopen(req)
+	page = urlopen(req,context=context)
 	html = page.read().decode("utf-8")
 	soup = BeautifulSoup(html, "html.parser")
 
@@ -77,7 +79,8 @@ def search(keywords):
 				# 	price of the food item (and not a button like "add to cart")
 				if ("$" in span.text):
 					cleanedPrice = (span.text).replace('$', '')
-					priceList.append(to_numeric(cleanedPrice))
+
+					priceList.append(((cleanedPrice)))
 
 			"""
 				Step 3: Find the weight/volume of the food product

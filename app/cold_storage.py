@@ -4,6 +4,7 @@ from pandas.core.tools.numeric import to_numeric
 import inspect
 from bs4.element import NavigableString, Tag
 import numpy as np
+import ssl
 
 """
 	CONFIGURATION 
@@ -30,6 +31,7 @@ headers = {'User-Agent': 'Mozilla/5.0'}
 		#}
 def search(keywords):
 	# a function to generate the search-query URL
+	context = ssl._create_unverified_context()
 	def generateURL(url, keywords):
 		queryURL = url
 		cleanedKeywords = keywords.replace(' ', '+')
